@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
+* {
+    list-style: none;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+}
+
+body {
+    background: #ffffff;
+}
+
+.wrapper .sidebar {
+    background: rgb(245, 245, 245);
+    position: fixed;
+    top: 20;
+    left: 0;
+    width: 265px;
+    height: 100%;
+    padding: 20px 0;
+
+}
+
+.wrapper .sidebar .profile {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+
+.wrapper .sidebar ul li a {
+    display: block;
+    padding: 13px 0px;
+    border-bottom: 1px solid rgb(230, 230, 230);;
+    color: #0c7db1;
+    font-size: 16px;
+    padding-left: 0 p;
+    text-decoration: none;
+    /* position: relative; */
+}
+
+.wrapper .sidebar ul li a .icon {
+    color: #0c7db1;
+    padding-left: 10px;
+    width: 30px;
+    display: inline-block;
+}
+
+.wrapper .sidebar ul li a:hover,
+.wrapper .sidebar ul li a.active {
+    color: #0c7db1;
+    background: rgb(230, 230, 230);
+    border-right: 2px solid rgb(230, 230, 230);
+}
+
+.wrapper .sidebar ul li a:hover .icon,
+.wrapper .sidebar ul li a.active .icon {
+    color: #0c7db1;
+}
+
+.wrapper .sidebar ul li a:hover:before,
+.wrapper .sidebar ul li a.active:before {
+    display: block;
+}
+
+.wrapper .section {
+    width: calc(100% - 0px);
+    transition: all 0.5s ease;
+}
+
+.wrapper .section .top_navbar {
+    background: rgb(245, 245, 245);
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 0 30px;
+    border-bottom: 2px solid rgb(230, 230, 230);
+}
+
+
+body.active .wrapper .sidebar {
+    left: -225px;
+}
+
+body.active .wrapper .section {
+    margin-left: 0;
+    width: 100%;
+}
+
+.wrapper .navbar {
+    background: rgb(245, 245, 245);
+    border-bottom: 2px solid rgb(230, 230, 230);
+}
+
+.wrapper .navbar .nav {
+    height: 0%;
+    border-bottom: 2px solid rgb(230, 230, 230);
+}
+

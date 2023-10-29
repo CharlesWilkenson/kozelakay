@@ -1,0 +1,34 @@
+#spring:
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3308/lhub_dev?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8
+#    username: lhub_owner  # modify username
+#    password: welcome1  # modify password
+#
+#  jpa:
+#    hibernate:
+#      ddlAuto: update
+#    showSql: true
+
+#logging:
+ # level:
+  #  org.springframework: DEBUG
+#server:
+#  servlet:
+#    multipart:
+#      max-file-size: 15MB
+#      max-request-size: 10MB
+#
+#  mvc:
+#    path:
+#       match:
+#         matching-strategy: ant-path-matcher
+#  jackson:
+#    serialization:
+#      fail-on-empty-beans: false
+# # config:
+#   # activate:
+#     # on-profile:
+#       # active: dev
+#path:
+#  dirname: ${user.home}/imageDir/

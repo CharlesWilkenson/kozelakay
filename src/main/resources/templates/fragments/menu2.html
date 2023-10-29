@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+	<title>Kodze lakay</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/menu.css}">
+</head>
+<body>
+
+	<div class="header_section" th:fragment="header">
+		<div class="container-fluid header_main">
+			<nav class="navbar navbar-expand-lg navbar-light bg-light">
+				<a class="logo" href="features.html"><img src="/images/logo.png"></a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse"
+					data-target="#navbarSupportedContent"
+					aria-controls="navbarSupportedContent" aria-expanded="false"
+					aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item"><a class="nav-link" href="/api/content/management/service/views/home">Home</a>
+						</li>
+						<li sec:authorize="!isAuthenticated()" class="nav-item"><a class="nav-link" href="/api/content/management/service/views/registerForm">Register</a></li>
+						<!-- <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li> -->
+						<li sec:authorize="!isAuthenticated()" class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+				<!--		<li class="nav-item"><a class="nav-link" href="#"><img src="/images/serach-icon.png"></a></li>-->
+					</ul>
+				</div>
+			</nav>
+		</div>
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+.preview{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: auto;
+    /*background-color: rgb(255, 255, 255);
+     box-shadow: 0 0 20px rgba(170, 170, 170, 0.2);*/
+}
+img {
+    object-fit: cover;
+    margin-bottom: 20px;
+}
+/*input[type=radio] {
+    margin: 1em 1em 1em 0;
+    transform: scale(3, 3);
+    -moz-transform: scale(3, 3);
+    -ms-transform: scale(3, 3);
+    -webkit-transform: scale(3, 3);
+    -o-transform: scale(3, 3);
+}*/
+
