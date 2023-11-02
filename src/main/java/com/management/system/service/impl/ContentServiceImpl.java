@@ -93,4 +93,9 @@ public class ContentServiceImpl implements ContentService {
     public List<Content> getContents() {
         return contentRepository.findAll();
     }
+
+    @Override
+    public List<Content> getContents(String email) {
+        return contentRepository.findByAuthor_email(email);
+    }
 }

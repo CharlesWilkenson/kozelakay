@@ -40,9 +40,15 @@ public class Index {
     }
     
     @GetMapping("/viewContent")
-    public String viewContent() {
+    public String viewContens() {
         return "viewContent";  
     }
+
+    @GetMapping("/view-members")
+    public String viewContent() {
+        return "viewUsers";
+    }
+
 
     @GetMapping("/home")
     public String home(Model model) {
@@ -58,6 +64,5 @@ public class Index {
 
         return "home";  
     }
-    
 
 }

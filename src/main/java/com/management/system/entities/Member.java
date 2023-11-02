@@ -44,6 +44,9 @@ public class Member extends AbstractAuditingEntity{
 
     private String description;
 
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
     private Collection<Content> contents;
 

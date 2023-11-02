@@ -57,12 +57,11 @@ public class SecurityConfig {
 
         return http
                 .csrf(AbstractHttpConfigurer::disable)
-
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/content/management/service/members/view-members").hasRole("ADMIN"))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(ENDPOINTS_WHITELIST).permitAll()
                         .anyRequest().authenticated())
-                
-                
+
                 .rememberMe((remember) -> remember
                         .rememberMeServices(rememberMeServices())
                 )

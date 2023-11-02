@@ -65,6 +65,7 @@ public class Init implements CommandLineRunner {
 		 * contentRepository.saveAll(List.of(content1, content2, content3, content4));
 		 */
         
-           
+     //  List<Content> contents = contentRepository.findByAuthor_email("charleswilkenson13@gmail.com");
+	 //  contents.stream().forEach(System.out::println);
     }
 }

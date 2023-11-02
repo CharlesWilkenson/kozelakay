@@ -1,8 +1,11 @@
 package com.management.system.service.impl;
 
 import com.management.system.entities.Member;
+import com.management.system.entities.Status;
+import com.management.system.exception.AccountLockedException;
 import com.management.system.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -21,13 +24,21 @@ import java.util.stream.Collectors;
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final MemberRepository memberRepository;
 
+   // @SneakyThrows
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Member member = memberRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("Invalid email"));
-        UserDetails user = User.withUsername(member.getEmail())
+
+            try {
+                if(member.getStatus() == Status.INACTIVE)
+                    throw new AccountLockedException("Your account is locked please contact system administrator");
+            } catch (AccountLockedException e) {
+
+            throw new RuntimeException(e);
+        }
+        return User.withUsername(member.getEmail())
                 .password(member.getPassword())
                 .authorities(getAuthorities(member)).build();
-        return user;
     }
 
     private Set<SimpleGrantedAuthority> getAuthorities(Member user) {

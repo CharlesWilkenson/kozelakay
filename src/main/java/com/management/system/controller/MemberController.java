@@ -17,6 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+import java.util.List;
+
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @RestController
@@ -60,4 +63,20 @@ public class MemberController {
         return ResponseEntity.ok(ResponseDTO.createSuccessResponse(HttpStatus.CREATED, "Member edited successfully"));
     }
 
+    @GetMapping
+    public ResponseEntity<ResponseDTO<List<MemberResponseDTO>>> getmembers() {
+        List<MemberResponseDTO> memberResponseDTOS = service.getMembers().stream().map(c -> mapper.map(c, MemberResponseDTO.class)).toList();
+
+        ResponseDTO<List<MemberResponseDTO>> responseDTO = new ResponseDTO<>();
+        responseDTO.setData(memberResponseDTOS);
+        return ResponseEntity.ok(responseDTO);
+    }
+
+    @GetMapping("change-status/{id}")
+    public ResponseEntity<ResponseDTO<MemberResponseDTO>> changeStatus(@PathVariable long id) {
+        MemberResponseDTO dto = mapper.map(service.changeStatus(id), MemberResponseDTO.class);
+        ResponseDTO<MemberResponseDTO> responseDTO = new ResponseDTO<>();
+        responseDTO.setData(dto);
+        return ResponseEntity.ok(responseDTO);
+    }
 }

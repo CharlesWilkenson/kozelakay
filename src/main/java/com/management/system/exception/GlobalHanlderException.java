@@ -79,4 +79,17 @@ public class GlobalHanlderException {
                 new ValidationErrorMessage(error.getField(), error.getDefaultMessage())));
         return validationErrorMessages;
     }
+
+    @ResponseStatus(HttpStatus.LOCKED)
+    @ExceptionHandler(AccountLockedException.class)
+    public ApiErrorResponse handleAccountLockedException(AccountLockedException e) {
+        HttpStatus httpStatus = HttpStatus.LOCKED;
+        return ApiErrorResponse
+                .builder()
+                .message(e.getMessage())
+                .error_code(String.valueOf(httpStatus.value()))
+                .status(httpStatus)
+                .timeStamp(LocalDateTime.now(ZoneOffset.UTC))
+                .build();
+    }
 }

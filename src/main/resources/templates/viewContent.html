@@ -30,18 +30,18 @@
 <br>
 <div class="cms-container" style="margin-left: 270px">
     <message th:replace="~{fragments/message::message}"></message>
-    <h2>View Content</h2>
+    <h2>View Contents</h2>
     <hr>
     <div class="card">
         <div class="card-header">
-            <h5 class="card-title mb-0">Content Forms Elements</h5>
+            <h5 class="card-title mb-0">Content List</h5>
         </div>
         <div class="card-body">
 
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-row">
-                        <table class="table table-bordered" id="tableContent">
+                        <table class="table table-bordered" id="tableContents">
                             <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -165,7 +165,9 @@
 <!--<script th:src="@{/js/modal.js}"></script>-->
 
 <script type="text/javascript">
-
+    $(document).ready(function() {
+   getContents();
+    });
     var btn = document.getElementById("close");
   var modal = document.getElementById("update_content_modal");
   btn.onclick = function() {
@@ -175,6 +177,7 @@
         function open_file() {
         document.getElementById('input_file').click();
     }
+
 
 </script>
 </body>

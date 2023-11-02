@@ -87,25 +87,7 @@
 <script th:src="@{/js/menu.js}"></script>
 <script>
     $(document).ready(function () {
-        $.ajax({
-            type: "GET",
-            url: "/api/content/management/service/members/view-profile",
-            contentType: "application/json",
-            dataType: 'json',
-            cache: false,
-            timeout: 600000,
-            success: function (response) {
-                $("#firstname").val(response.data.firstname);
-                $("#lastname").val(response.data.lastname);
-                $("#phone").val(response.data.phone);
-                $("#description").val(response.data.description);
-                document.getElementById("email").innerHTML = response.data.email;
-            },
-            error: function (e) {
-                //  alert("ERROR: " + e);
-                console.log("ERROR: ", e.responseText);
-            }
-        });
+getUser();
     });
 </script>
 

@@ -17,6 +17,5 @@ public interface ContentService {
      void deleteContent(Long id);
 
      List<Content> getContents();
-
-   // List<Content> getContents(Long authorId);
+    List<Content> getContents(String email);
 }

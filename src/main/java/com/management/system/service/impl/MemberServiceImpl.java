@@ -3,6 +3,7 @@ package com.management.system.service.impl;
 import com.management.system.entities.Authority;
 import com.management.system.entities.Member;
 import com.management.system.entities.Role;
+import com.management.system.entities.Status;
 import com.management.system.exception.AlreadyExistsException;
 import com.management.system.exception.PasswordsNotMatchException;
 import com.management.system.exception.ResourceNotFoundException;
@@ -15,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -25,15 +27,18 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void register(Member member) throws AlreadyExistsException, PasswordsNotMatchException {
-        if (Boolean.TRUE.equals(memberRepository.existsByEmail(member.getEmail()))) throw new AlreadyExistsException("This email already used");
-        if(!member.getPassword().equals(member.getRePassword())) throw new PasswordsNotMatchException("The passwords don't match");
+        if (Boolean.TRUE.equals(memberRepository.existsByEmail(member.getEmail())))
+            throw new AlreadyExistsException("This email already used");
+        if (!member.getPassword().equals(member.getRePassword()))
+            throw new PasswordsNotMatchException("The passwords don't match");
 
         member.setPassword(bcryptEncoder.encode(member.getPassword()));
+        member.setStatus(Status.ACTIVE);
         final HashSet<Role> roles = new HashSet<>();
         Role role = roleRepository.findByName(Authority.MEMBER);
 
         if (role == null) {
-            role =  Role.builder()
+            role = Role.builder()
                     .name(Authority.MEMBER)
                     .build();
             roleRepository.save(role);
@@ -56,8 +61,27 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member findByEmail(String email){
-        return memberRepository.findByEmail(email).orElseThrow(()->  new ResourceNotFoundException("Member not found"));
+    public Member findByEmail(String email) {
+        return memberRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("Member not found"));
     }
+
+    @Override
+    public List<Member> getMembers() {
+        return memberRepository.findAll();
+    }
+
+    @Override
+    public Member changeStatus(long id) {
+        Member member = memberRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Member not found"));
+        Status status = member.getStatus() == Status.ACTIVE ? Status.INACTIVE : Status.ACTIVE;
+
+        member.setStatus(status);
+        memberRepository.save(member);
+
+        System.out.println(status);
+        System.out.println(member.getStatus());
+        return member;
+    }
+
 
 }

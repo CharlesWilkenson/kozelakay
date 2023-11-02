@@ -89,15 +89,31 @@ public class ContentController {
         return ResponseEntity.ok(ResponseDTO.createSuccessResponse(HttpStatus.CREATED, "Content deleted successfully"));
     }
 
-    @GetMapping
-    public ResponseEntity<ResponseDTO<List<ContentResponseDTO>>> getContents(Principal  principal) {
-        System.out.println(principal);
+/*    @GetMapping
+    public ResponseEntity<ResponseDTO<List<ContentResponseDTO>>> getContents() {
         List<ContentResponseDTO> contentResponseDTOList = contentService.getContents().stream().map(c -> mapper.map(c, ContentResponseDTO.class)).toList();
         ResponseDTO<List<ContentResponseDTO>> responseDTO = new ResponseDTO<>();
         responseDTO.setData(contentResponseDTOList);
         return ResponseEntity.ok(responseDTO);
+    }*/
+
+    @GetMapping
+    public ResponseEntity<ResponseDTO<List<ContentResponseDTO>>> getContents() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<ContentResponseDTO> contentResponseDTOList = contentService.getContents(email).stream().map(c -> mapper.map(c, ContentResponseDTO.class)).toList();
+        ResponseDTO<List<ContentResponseDTO>> responseDTO = new ResponseDTO<>();
+        responseDTO.setData(contentResponseDTOList);
+        return ResponseEntity.ok(responseDTO);
     }
-    
+
+
+    @GetMapping("/{email}")
+    public ResponseEntity<ResponseDTO<List<ContentResponseDTO>>> getContents(@PathVariable String email) {
+        List<ContentResponseDTO> contentResponseDTOList = contentService.getContents(email).stream().map(c -> mapper.map(c, ContentResponseDTO.class)).toList();
+        ResponseDTO<List<ContentResponseDTO>> responseDTO = new ResponseDTO<>();
+        responseDTO.setData(contentResponseDTOList);
+        return ResponseEntity.ok(responseDTO);
+    }
     
     @GetMapping("getImage")
     public byte[] getImage(@RequestParam(name = "id") Long id) throws

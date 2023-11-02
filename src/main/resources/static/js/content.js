@@ -1,46 +1,8 @@
+
 $(document).ready(function() {
 	/**
 	 * get data from Backend's REST API
 	 */
-	$.ajax({
-		type: "GET",
-		url: "/api/content/management/service/contents/",
-		contentType: "application/json",
-		dataType: 'json',
-		cache: false,
-		timeout: 600000,
-		success: function(response) {
-
-			$('#tableContent tbody').empty();
-			// add table rows
-			$.each(response.data, (i, content) => {
-				let contentRows = '<tr>' +
-					'<td>' + content.id + '</td>' +
-					'<td>'
-					+ "<div className=avatar>"
-					+ "<div className=picture-container>"
-					+ "<div className=picture>"
-					+ "<img src=/api/content/management/service/contents/getImage?id=" + content.id + " height=30  width=30 className=picture-src id=wizardPicturePreview-2 title=>"
-					+ "</div>"
-					+ "</div>"
-					+ "</div>"
-					+ '</td>' +
-					'<td>' + content.title + '</td>' +
-					'<td>' + content.brief + '</td>' +
-					'<td>' + content.createdDate + '</td>' +
-                    '<td>' +
-                    '<button type="button" id="myBtn" class="btn btn-success" onclick="getContent(\'' + content.id + '\');"  data-target="#update_content_modal"  data-toggle="modal"  data-placement="top"   title="Editer"><span class="fa fa-edit fa-fw"></span></button>' +
-                    '<button type="button" class="btn btn-success"   data-target="#update_shop_modal"  data-toggle="modal"  data-placement="top"   title="Editer"><span class="fa fa-trash fa-fw"></span></button>' +
-                    '</td>' +
-					'</tr>';
-				$('#tableContent tbody').append(contentRows);
-			});
-		},
-		error: function(e) {
-			console.log("ERROR: ", e);
-		}
-	});
-
 	$("#btnAdd").click(function(event) {
 		// Prevent the form from submitting via the browser.
 		event.preventDefault();
@@ -101,7 +63,7 @@ $(document).ready(function() {
 });
 
 
-function getContent(id){
+function getContentbyId(id){
 	$.ajax({
 		type: "GET",
 		url: "/api/content/management/service/contents/view-content/"+id,
@@ -126,4 +88,86 @@ function getContent(id){
 				createErrorValidationResponse(error);
 			}
 		});
+}
+
+function getContents() {
+	$.ajax({
+		type: "GET",
+		url: "/api/content/management/service/contents/",
+		contentType: "application/json",
+		dataType: 'json',
+		cache: false,
+		timeout: 600000,
+		success: function(response) {
+
+			$('#tableContents tbody').empty();
+			// add table rows
+			$.each(response.data, (i, content) => {
+				let contentRows = '<tr>' +
+					'<td>' + content.id + '</td>' +
+					'<td>'
+					+ "<div className=avatar>"
+					+ "<div className=picture-container>"
+					+ "<div className=picture>"
+					+ "<img src=/api/content/management/service/contents/getImage?id=" + content.id + " height=30  width=30 className=picture-src id=wizardPicturePreview-2 title=>"
+					+ "</div>"
+					+ "</div>"
+					+ "</div>"
+					+ '</td>' +
+					'<td>' + content.title + '</td>' +
+					'<td>' + content.brief + '</td>' +
+					'<td>' + content.createdDate + '</td>' +
+                    '<td>' +
+                    '<button type="button" id="myBtn" class="btn btn-success" onclick="getContentbyId(\'' + content.id + '\');"  data-target="#update_content_modal"  data-toggle="modal"  data-placement="top"   title="Editer"><span class="fa fa-edit fa-fw"></span></button>' +
+                    '<button type="button" class="btn btn-success"   data-target="#update_shop_modal"  data-toggle="modal"  data-placement="top" style="color:red;; background-color:gray"  title="Editer"><span class="fa fa-trash fa-fw"></span></button>' +
+                    '</td>' +
+					'</tr>';
+				$('#tableContents tbody').append(contentRows);
+			});
+		},
+		error: function(e) {
+			console.log("ERROR: ", e);
+		}
+	});
+}
+
+function getContentsByAuthor(author){
+	$.ajax({
+		type: "GET",
+		url: "/api/content/management/service/contents/"+author,
+		contentType: "application/json",
+		dataType: 'json',
+		cache: false,
+		timeout: 600000,
+		success: function(response) {
+
+			$('#tableContents tbody').empty();
+			// add table rows
+			$.each(response.data, (i, content) => {
+				let contentRows = '<tr>' +
+					'<td>' + content.id + '</td>' +
+					'<td>'
+					+ "<div className=avatar>"
+					+ "<div className=picture-container>"
+					+ "<div className=picture>"
+					+ "<img src=/api/content/management/service/contents/getImage?id=" + content.id + " height=30  width=30 className=picture-src id=wizardPicturePreview-2 title=>"
+					+ "</div>"
+					+ "</div>"
+					+ "</div>"
+					+ '</td>' +
+					'<td>' + content.title + '</td>' +
+					'<td>' + content.brief + '</td>' +
+					'<td>' + content.createdDate + '</td>' +
+					'</tr>';
+				$('#tableContents tbody').append(contentRows);
+			});
+					    // Get the modal
+                        var modal = document.getElementById("update_user_modal");
+                        // When the user clicks the button, open the modal
+                          modal.style.display = "block";
+		},
+		error: function(e) {
+			console.log("ERROR: ", e);
+		}
+	});
 }
