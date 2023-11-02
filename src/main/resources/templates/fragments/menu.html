@@ -22,20 +22,6 @@
                     <a href="javascript:void(0)" class="dropdown-toggle">
                         <span class="icon"><i style="color: #333333" class="fa fa-user"></i></span>
                     </a>
-<!--                    <div sec:authorize="hasRole('USER')">Text visible to user.</div>
-                    <div sec:authorize="hasRole('ADMIN')">Text visible to admin.</div>-->
-                    <div sec:authorize="!isAuthenticated()">
-                        Text visible only to authenticated users.
-                    </div>
-                   <!-- Authenticated username:
-                    <div sec:authentication="name"></div>
-                    Authenticated user roles:
-                    <div sec:authentication="principal.authorities"></div>
-                    Logged user: <span sec:authentication="name">Bob</span>
-                    Roles: <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span>
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                        <span class="hidden-xs" sec:authentication="name"></span>
-                    </a>-->
                     <ul class="dropdown-menu">
                         <li>
                             <a href="/api/content/management/service/views/editProfile">
