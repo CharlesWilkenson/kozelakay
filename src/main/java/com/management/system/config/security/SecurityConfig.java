@@ -34,7 +34,6 @@ public class SecurityConfig {
     private static final String ADMIN = "ADMIN";
     private static final String MEMBER = "MEMBER";
 
-
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
