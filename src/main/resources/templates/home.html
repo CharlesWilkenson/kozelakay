@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
+    <title>Kodze lakay</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
     <style th:replace="~{fragments/style::style}"></style>
 </head>
@@ -21,12 +21,12 @@
                     <img src="/images/like-icon.png">
                 </div>
                 <h3 class="consectetur_text" th:text="${val.title}"></h3>
-                <p class="post_text"  th:text="@{${'Post By :' + val.createdDate}}"></p>
+                <p class="post_text"  th:text="${#dates.format(val.createdDate, 'dd-MMM-yyyy')}"></p>
                 <h2 class="most_text" th:text="${val.brief}">
                 </h2>
                 <p class="lorem_text" th:text="${val.content}"></p>
 
-                <!-- 		<div class="social_icon_main">
+                <!-- 	  th:text="@{${'Post By :' + val.createdDate}}	<div class="social_icon_main">
                             <div class="social_icon">
                                 <ul>
                                     <li><a href="#"><img src="/images/fb-icon.png"></a></li>

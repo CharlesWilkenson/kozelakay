@@ -8,7 +8,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -18,7 +17,11 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
+
+import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -26,43 +29,33 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsServiceImpl userDetailsService;
-    public static final String[] ENDPOINTS_WHITELIST = {
-    		"/css/**", "/js/**", "/img/**", "/lib/**", "/favicon.ico",
-
-           "/resources/static/js/**",
-          "/resources/static/css/**",
-            
-            "/WEB-INF/jsp/login.html",
-            "/WEB-INF/jsp/register.html",
-            "/WEB-INF/jsp/home.html",
-            "/WEB-INF/jsp/templates/message.html",
-            "/WEB-INF/jsp/templates/menu2.html",
-            
-//            "/", "/index.html", "/favicon.ico", "/**/*.js",
-//            "/**/*.js.map", "/**/*.css", "/assets/images/*.png",
-//            "/assets/images/*.jpg", "/assets/images/*.jpeg", 
-//            "/assets/images/*.gif", "/**/*.ttf", "/**/*.json",
-//            "/**/*.woff", "/**/*.woff2", "/**/*.eot", "/**/*.svg",
-           
-            "/api/content/management/service/views/registerForm",
-            "/api/content/management/service/views/home",
-            "/api/content/management/service/members/register",
-            "/api/content/management/service/contents/getImage/**"
-    };
     public static final String LOGIN_URL = "/login";
     public static final String LOGOUT_URL = "/logout";
+
+    private static final String ADMIN = "ADMIN";
+    private static final String MEMBER = "MEMBER";
+
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        return http
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/content/management/service/members/view-members").hasRole("ADMIN"))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(ENDPOINTS_WHITELIST).permitAll()
-                        .anyRequest().authenticated())
+       return http.csrf(AbstractHttpConfigurer::disable)
+               .authorizeHttpRequests(authorize -> authorize
+                       .requestMatchers(antMatcher("/api/content/management/service/views/view-members")).hasRole(ADMIN)
+                       .requestMatchers(antMatcher("/api/content/management/service/members/change-status/**")).hasRole(ADMIN)
 
-                .rememberMe((remember) -> remember
+                       .requestMatchers(antMatcher("/api/content/management/service/members/viewContent")).hasAnyRole(ADMIN, MEMBER)
+
+                       .requestMatchers(antMatcher("/api/content/management/service/views/editProfile")).hasAnyRole(ADMIN, MEMBER)
+                       .requestMatchers(antMatcher("/api/content/management/service/views/registerForm")).permitAll()
+                       .requestMatchers(antMatcher("/api/content/management/service/views/addContent")).hasAnyRole(ADMIN, MEMBER)
+                       .requestMatchers(antMatcher("/api/content/management/service/views/home")).permitAll()
+
+                       .requestMatchers(antMatcher("/api/content/management/service/members/register")).permitAll()
+                       .requestMatchers(antMatcher("/api/content/management/service/contents/getImage/**")).permitAll()
+                       .anyRequest().authenticated())
+
+                       .rememberMe(remember -> remember
                         .rememberMeServices(rememberMeServices())
                 )
                 .formLogin(form ->
@@ -86,19 +79,16 @@ public class SecurityConfig {
                 .build();
     }
 
-
     @Bean
     WebSecurityCustomizer ignoringCustomizer() {
-        return (web) -> web.ignoring().requestMatchers( 
-        		"/css/**", "/js/**", "/images/**", "/favicon.ico");
+        return (web -> { web.ignoring().requestMatchers( antMatcher("/css/**"));
+                         web.ignoring().requestMatchers( antMatcher("/js/**"));
+                         web.ignoring().requestMatchers( antMatcher("/templates/**"));
+                         web.ignoring().requestMatchers( antMatcher("/images/**"));
+                         web.ignoring().requestMatchers( antMatcher("/favicon.ico/**"));
+        });
     }
 
-	/*
-	 * @Bean public WebSecurityCustomizer webSecurityCustomizer() { return (web) ->
-	 * web.debug(false) .ignoring() .antMatchers("/css/**", "/js/**", "/img/**",
-	 * "/lib/**", "/favicon.ico"); }
-	 */
-    
     private AuthenticationSuccessHandler successHandler() {
         SimpleUrlAuthenticationSuccessHandler simpleUrlAuthenticationSuccessHandler = new SimpleUrlAuthenticationSuccessHandler();
         simpleUrlAuthenticationSuccessHandler.setDefaultTargetUrl("/api/content/management/service/views/viewContent");
@@ -124,5 +114,10 @@ public class SecurityConfig {
         TokenBasedRememberMeServices rememberMe = new TokenBasedRememberMeServices("myKey", userDetailsService, encodingAlgorithm);
         rememberMe.setMatchingAlgorithm(TokenBasedRememberMeServices.RememberMeTokenAlgorithm.MD5);
         return rememberMe;
+    }
+
+    @Bean
+    MvcRequestMatcher.Builder mvc(HandlerMappingIntrospector introspector) {
+        return new MvcRequestMatcher.Builder(introspector);
     }
 }

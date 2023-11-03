@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <title>Kodze lakay</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -49,7 +49,7 @@
             </a>
         </li>
 
-        <li>
+        <li sec:authorize="hasAuthority('ADMIN')">
             <a href="/api/content/management/service/views/view-members">
                 <span class="icon"><i class="fa fa-user"></i></span>
                 <span class="item">Manage Users</span>

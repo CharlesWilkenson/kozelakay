@@ -49,7 +49,6 @@ public class Index {
         return "viewUsers";
     }
 
-
     @GetMapping("/home")
     public String home(Model model) {
     	List<Content> contents = contentService.getContents();

@@ -123,7 +123,6 @@ public class ContentController {
 
       File f = new File(imageDir + id + "" + fileName);
       String decodedPath = URLDecoder.decode(f.getPath(), "UTF-8");
-  	log.info(f.getPath());
       return IOUtils.toByteArray(new FileInputStream(decodedPath));
     }
 

@@ -119,7 +119,7 @@ function getContents() {
 					'<td>' + content.createdDate + '</td>' +
                     '<td>' +
                     '<button type="button" id="myBtn" class="btn btn-success" onclick="getContentbyId(\'' + content.id + '\');"  data-target="#update_content_modal"  data-toggle="modal"  data-placement="top"   title="Editer"><span class="fa fa-edit fa-fw"></span></button>' +
-                    '<button type="button" class="btn btn-success"   data-target="#update_shop_modal"  data-toggle="modal"  data-placement="top" style="color:red;; background-color:gray"  title="Editer"><span class="fa fa-trash fa-fw"></span></button>' +
+                    /*'<button type="button" class="btn btn-success"   data-target="#update_shop_modal"  data-toggle="modal"  data-placement="top" style="color:red;; background-color:gray"  title="Editer"><span class="fa fa-trash fa-fw"></span></button>' +*/
                     '</td>' +
 					'</tr>';
 				$('#tableContents tbody').append(contentRows);

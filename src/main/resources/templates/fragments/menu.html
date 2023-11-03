@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -14,13 +14,12 @@
 
     <nav class="navbar navbar-expand-lg ">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/api/content/management/service/views/home">CMS</a>
-            <!-- <ul class="navbar-nav me-auto mb-2 mb-lg-0"> </ul> -->
+                <a class="navbar-brand" href="/api/content/management/service/views/home">CMS</a>
 
+<!--            <ul sec:authentication="name"style="margin-right: 0px"> </ul>-->
             <ul class="nav" style="background-color: rgb(245, 245, 245); border-bottom: rgb(230, 230, 230)">
                 <li class="button-dropdown">
                     <a href="javascript:void(0)" class="dropdown-toggle">
-                        <span class="icon"><i style="color: #333333" class="fa fa-user"></i></span>
                     </a>
                     <ul class="dropdown-menu">
                         <li>
