@@ -63,7 +63,7 @@ public class MemberController {
         return ResponseEntity.ok(ResponseDTO.createSuccessResponse(HttpStatus.CREATED, "Member edited successfully"));
     }
 
-    @GetMapping
+    @GetMapping("view-users")
     public ResponseEntity<ResponseDTO<List<MemberResponseDTO>>> getmembers() {
         List<MemberResponseDTO> memberResponseDTOS = service.getMembers().stream().map(c -> mapper.map(c, MemberResponseDTO.class)).toList();
 

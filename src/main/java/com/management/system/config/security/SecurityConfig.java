@@ -20,7 +20,6 @@ import org.springframework.security.web.authentication.rememberme.TokenBasedReme
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
-
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
 @Configuration
@@ -41,14 +40,15 @@ public class SecurityConfig {
 
        return http.csrf(AbstractHttpConfigurer::disable)
                .authorizeHttpRequests(authorize -> authorize
-                       .requestMatchers(antMatcher("/api/content/management/service/views/view-members")).hasRole(ADMIN)
-                       .requestMatchers(antMatcher("/api/content/management/service/members/change-status/**")).hasRole(ADMIN)
+                       .requestMatchers(antMatcher("/api/content/management/service/views/view-usersForm")).hasAuthority(ADMIN)
+                       .requestMatchers(antMatcher("/api/content/management/service/members/change-status/**")).hasAuthority(ADMIN)
+                       .requestMatchers(antMatcher("/api/content/management/service/members/view-users")).hasAuthority(ADMIN)
 
-                       .requestMatchers(antMatcher("/api/content/management/service/members/viewContent")).hasAnyRole(ADMIN, MEMBER)
+                       .requestMatchers(antMatcher("/api/content/management/service/members/viewContent")).hasAnyAuthority(ADMIN, MEMBER)
 
-                       .requestMatchers(antMatcher("/api/content/management/service/views/editProfile")).hasAnyRole(ADMIN, MEMBER)
+                       .requestMatchers(antMatcher("/api/content/management/service/views/editProfile")).hasAnyAuthority(ADMIN, MEMBER)
                        .requestMatchers(antMatcher("/api/content/management/service/views/registerForm")).permitAll()
-                       .requestMatchers(antMatcher("/api/content/management/service/views/addContent")).hasAnyRole(ADMIN, MEMBER)
+                       .requestMatchers(antMatcher("/api/content/management/service/views/addContent")).hasAnyAuthority(ADMIN, MEMBER)
                        .requestMatchers(antMatcher("/api/content/management/service/views/home")).permitAll()
 
                        .requestMatchers(antMatcher("/api/content/management/service/members/register")).permitAll()

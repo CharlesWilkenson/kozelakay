@@ -84,7 +84,7 @@ $.ajax({
 function getUsers() {
 $.ajax({
 		type: "GET",
-		url: "/api/content/management/service/members/",
+		url: "/api/content/management/service/members/view-users",
 		contentType: "application/json",
 		dataType: 'json',
 		cache: false,

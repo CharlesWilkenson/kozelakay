@@ -44,7 +44,7 @@ public class Index {
         return "viewContent";  
     }
 
-    @GetMapping("/view-members")
+    @GetMapping("/view-usersForm")
     public String viewContent() {
         return "viewUsers";
     }
