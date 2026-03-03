@@ -6,7 +6,7 @@ pipeline{
     stages{
         stage('Checkout-Code'){
           steps {
-              echo 'Cloning repo'
+              echo 'Cloning repo!'
             git branch: 'main',
                 url: 'https://github.com/CharlesWilkenson/kozelakay.git'
         }
