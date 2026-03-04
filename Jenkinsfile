@@ -24,6 +24,7 @@ pipeline{
             }
             post{
               success{
+              echo 'Generating test reports..'
                junit 'target/surefire-reports/*.xml'
               }
             }
