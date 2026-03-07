@@ -13,6 +13,12 @@ pipeline {
     }
 
     stages {
+        stage('Fix Git Safety') {
+                    steps {
+                        // This command tells Git that the current workspace is safe
+                        sh 'git config --global --add safe.directory /var/jenkins_home/workspace/kozelakay'
+                    }
+                }
         stage('Checkout-Code') {
             steps {
                  echo 'Cloning repo.'
