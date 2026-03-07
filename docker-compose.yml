@@ -2,8 +2,9 @@ version: '3.8'
 
 services:
   jenkins:
-    image: jenkins/jenkins:lts
+    build: ./jenkins
     container_name: jenkins
+    user: root
     ports:
       - "8080:8080"
       - "50000:50000"
@@ -14,11 +15,13 @@ services:
       - ci_network
 
   ansible:
-    image: cytopia/ansible:latest
+    build: ./ansible
     container_name: ansible
     tty: true
     volumes:
       - ./ansible:/ansible
+    ports:
+      - "2222:22"
     networks:
       - ci_network
 

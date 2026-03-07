@@ -1,6 +1,11 @@
 pipeline {
-    // 1. Target your specific Ansible container node
-    agent { label 'ansible-engine' }
+agent {
+        docker {
+  // Jenkins will use the image built from your ./ansible/Dockerfile
+            image 'kozelakay-jenkins'
+            args '-v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
 
     tools {
         maven 'myMaven'
@@ -11,7 +16,8 @@ pipeline {
             steps {
                 echo 'Cloning repo.'
                 // Using 'checkout scm' is cleaner if your job is already linked to GitHub
-                git branch: 'main', url: 'https://github.com/CharlesWilkenson/kozelakay.git'
+                git branch: 'main',
+                 url: 'https://github.com/CharlesWilkenson/kozelakay.git'
             }
         }
 
