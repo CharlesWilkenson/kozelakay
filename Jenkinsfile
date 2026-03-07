@@ -8,7 +8,7 @@ pipeline {
         }
 
     tools {
-        echo 'maven setup'
+       //echo 'maven setup'
         maven 'myMaven'
     }
 
