@@ -2,9 +2,9 @@ pipeline {
     agent {
       docker {
       // Jenkins will use the image built from your ./ansible/Dockerfile
-                echo 'Jenkins will use the image built from your ./ansible/Dockerfile'
-                image 'kozelakay-jenkins'
-                args '-v /var/run/docker.sock:/var/run/docker.sock'
+        echo 'Jenkins will use the image built from your ./ansible/Dockerfile'
+        image 'kozelakay-jenkins'
+        args '-v /var/run/docker.sock:/var/run/docker.sock'
             }
         }
 
