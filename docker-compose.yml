@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock  # allow Jenkins to run docker exec
+    networks:
+      - ci_network
+
+  ansible:
+    image: cytopia/ansible:latest
+    container_name: ansible
+    tty: true
+    volumes:
+      - ./ansible:/ansible
+    networks:
+      - ci_network
+
+volumes:
+  jenkins_home:
+
+networks:
+  ci_network:
+    driver: bridge

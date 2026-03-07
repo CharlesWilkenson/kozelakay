@@ -1,6 +1,7 @@
 package com.management.system.controller;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -56,7 +57,7 @@ public class Index {
     	List<Content> twoLastContents = List.of(contents.get(contents.size()-1),contents.get(contents.size()-2));
     	
     	List<Content> list1 = contents.stream().filter(content -> content.getId() != contents.get(contents.size()-1).getId()
-    			&& content.getId() != contents.get(contents.size()-2).getId()).collect(Collectors.toList());
+    			&& !Objects.equals(content.getId(), contents.get(contents.size() - 2).getId())).collect(Collectors.toList());
     	
     	model.addAttribute("twoLastContents", twoLastContents);
     	model.addAttribute("contents", list1);

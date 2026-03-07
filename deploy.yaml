@@ -1,0 +1,6 @@
+---
+- name: Deploy Spring Boot
+  hosts: webservers
+  become: yes
+  roles:
+    - ansible_role

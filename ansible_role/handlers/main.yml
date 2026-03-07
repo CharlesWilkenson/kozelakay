@@ -1,0 +1,8 @@
+---
+# handlers file for my_ansible_role
+ - name: Restart App
+   systemd:
+      name: "{{ app_name }}"
+      state: restarted
+      enabled: yes
+      daemon_reload: yes
