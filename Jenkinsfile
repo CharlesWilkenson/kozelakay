@@ -2,21 +2,23 @@ pipeline {
     agent {
       docker {
       // Jenkins will use the image built from your ./ansible/Dockerfile
+                echo 'Jenkins will use the image built from your ./ansible/Dockerfile'
                 image 'kozelakay-jenkins'
                 args '-v /var/run/docker.sock:/var/run/docker.sock'
             }
         }
 
     tools {
+        echo 'maven setup'
         maven 'myMaven'
     }
 
     stages {
         stage('Checkout-Code') {
             steps {
-                echo 'Cloning repo.'
+                 echo 'Cloning repo.'
                 // Using 'checkout scm' is cleaner if your job is already linked to GitHub
-                git branch: 'main',
+                 git branch: 'main',
                  url: 'https://github.com/CharlesWilkenson/kozelakay.git'
             }
         }
