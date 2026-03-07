@@ -23,7 +23,7 @@ agent {
 
         stage('Build & Test') {
             steps {
-                echo 'Compiling and Testing Code...'
+                echo 'Compiling and Testing Code....'
                 sh 'mvn clean package' // Combines compile, test, and package
             }
         }
