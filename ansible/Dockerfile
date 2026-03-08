@@ -7,6 +7,8 @@
 FROM cytopia/ansible:latest
 # Add any specific ansible collections or python libs you need
 RUN ansible-galaxy collection install community.docker
+# Install Maven and OpenJDK (Java)
+RUN apk add --no-cache maven openjdk17
 
 # Switch to root to install packages
 #USER root

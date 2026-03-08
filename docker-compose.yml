@@ -20,6 +20,7 @@ services:
     tty: true
     volumes:
       - ./ansible:/ansible
+      - /var/run/docker.sock:/var/run/docker.sock  # allow Jenkins to run docker exec
     ports:
       - "2222:22"
     networks:

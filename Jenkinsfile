@@ -8,7 +8,6 @@ pipeline {
         }
 
     tools {
-       //echo 'maven setup'
         maven 'myMaven'
     }
 
@@ -31,7 +30,14 @@ pipeline {
         stage('Build & Test') {
             steps {
                 echo 'Compiling and Testing Code....'
-                sh 'mvn clean package' // Combines compile, test, and package
+                script {
+                            // This manually retrieves the path Jenkins assigned to 'myMaven'
+                            def mvnHome = tool 'myMaven'
+                            echo "Maven is located at: ${mvnHome}"
+                            // Now run it using the full path
+                            sh "${mvnHome}/bin/mvn clean package"
+                        }
+               // sh 'mvn clean package' // Combines compile, test, and package
             }
         }
 
