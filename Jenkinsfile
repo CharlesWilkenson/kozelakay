@@ -1,53 +1,40 @@
 pipeline {
-    agent {
-      docker {
-      // Jenkins will use the image built from your ./ansible/Dockerfile
-        image 'kozelakay-jenkins'
-        args '-v /var/run/docker.sock:/var/run/docker.sock'
-            }
-        }
-
-    tools {
-        maven 'myMaven'
-    }
-
+    agent none
     stages {
-        stage('Fix Git Safety') {
-                    steps {
-                        // This command tells Git that the current workspace is safe
-                        sh 'git config --global --add safe.directory /var/jenkins_home/workspace/kozelakay'
-                    }
-                }
+        // STEP 1: Get the code from GitHub
         stage('Checkout-Code') {
+            agent any // Use the controller just to pull the files
             steps {
-                 echo 'Cloning repo.'
-                // Using 'checkout scm' is cleaner if your job is already linked to GitHub
-                 git branch: 'main',
-                 url: 'https://github.com/CharlesWilkenson/kozelakay.git'
+                echo 'Cloning repo...'
+                git branch: 'main', url: 'https://github.com/CharlesWilkenson/kozelakay.git'
             }
         }
 
+        // STEP 2: Build and Test using a Docker Container (No install needed!)
         stage('Build & Test') {
+            agent {
+                docker {
+                    image 'maven:3.9-eclipse-temurin-17'
+                    // Optional: This speeds up builds by caching dependencies on your host
+                    args '-v $HOME/.m2:/root/.m2'
+                }
+            }
             steps {
-                echo 'Compiling and Testing Code....'
-                script {
-                            // This manually retrieves the path Jenkins assigned to 'myMaven'
-                            def mvnHome = tool 'myMaven'
-                            echo "Maven is located at: ${mvnHome}"
-                            // Now run it using the full path
-                            sh "${mvnHome}/bin/mvn clean package"
-                        }
-               // sh 'mvn clean package' // Combines compile, test, and package
+                echo 'Compiling, Testing, and Packaging...'
+                sh 'mvn clean package -DskipTests'
+                // The .jar file is now in the 'target/' folder
             }
         }
 
+        // STEP 3: Deploy using an Ansible Container
         stage('Execute Playbook (Deploy)') {
+            agent {
+                docker { image 'cytopia/ansible:latest' }
+            }
             steps {
                 echo 'Starting Ansible Deployment...'
-                // Use the SSH Agent to inject your EC2 .pem key
                 sshagent(['ec2-ansible-key']) {
                     sh '''
-                        # Ensure the inventory.ini and deploy.yml are in the root of your repo
                         ansible-playbook -i inventory.ini deploy.yml \
                         -u ubuntu \
                         -e "ansible_ssh_common_args='-o StrictHostKeyChecking=no'"
