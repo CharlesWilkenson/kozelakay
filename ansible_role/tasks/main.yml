@@ -1,5 +1,4 @@
 ---
-  tasks:
   - name: Install Docker (Debian/Ubuntu)
     apt:
       name: docker.io
