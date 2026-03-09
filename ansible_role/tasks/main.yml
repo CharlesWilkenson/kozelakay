@@ -1,4 +1,42 @@
 ---
+
+  - name: Installer les dépendances (Ubuntu)
+    apt:
+      name: "{{ item }}"
+      state: present
+      update_cache: yes
+    loop: ['apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip']
+    when: ansible_os_family == "Debian"
+
+  - name: Ajouter la clé GPG officielle Docker (Ubuntu)
+    apt_key:
+      url: https://download.docker.com/linux/ubuntu/gpg
+      state: present
+    when: ansible_os_family == "Debian"
+
+  - name: Ajouter le dépôt Docker (Ubuntu)
+    apt_repository:
+      repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+      state: present
+    when: ansible_os_family == "Debian"
+      
+  # --- CONFIGURATION COMMUNE ---
+  - name: Installer la bibliothèque Python Docker (nécessaire pour Ansible)
+    pip:
+      name: docker
+
+  - name: Démarrer et activer le service Docker
+    service:
+      name: docker
+      state: started
+      enabled: yes
+
+  - name: Ajouter l'utilisateur distant au groupe docker
+    user:
+      name: "{{ ansible_user }}"
+      groups: docker
+      append: yes
+
   - name: Stop and remove the old container
     docker_container:
       name: "{{ app_name }}"
