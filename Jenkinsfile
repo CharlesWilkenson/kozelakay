@@ -33,12 +33,17 @@ pipeline {
             }
             steps {
                 echo 'Starting Ansible Deployment...'
-                sshagent(['ec2-ansible-key']) {
-                    sh '''
+                // 'my-ansible-creds' must match the ID in Jenkins Credentials Provider
+                withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ansible-key',
+                                                 keyFileVariable: 'SSH_KEY',
+                                                 usernameVariable: 'SSH_USER')]) {
+                    sh """
                         ansible-playbook -i inventory.ini deploy.yml \
-                        -u ubuntu \
-                        -e "ansible_ssh_common_args='-o StrictHostKeyChecking=no'"
-                    '''
+                        -u ${SSH_USER} \
+                        --private-key=${SSH_KEY} \
+                        --ssh-common-args='-o StrictHostKeyChecking=no' \
+                        -e 'ansible_ssh_private_key_file=${SSH_KEY}'
+                    """
                 }
             }
         }
