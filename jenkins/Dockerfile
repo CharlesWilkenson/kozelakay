@@ -8,8 +8,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # IMPORTANT: Add the jenkins user to the docker group
-RUN groupadd -g 999 docker && \
-    usermod -aG docker jenkins
+#RUN groupmod -g 999 docker && \
+#    usermod -aG docker jenkins
 
 # Fix the 'dubious ownership' issue
 RUN git config --global --add safe.directory '*'
