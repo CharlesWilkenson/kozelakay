@@ -10,7 +10,7 @@ pipeline {
             steps { checkout scm }
         }
         stage('Build Artifact') {
-            steps { sh './mvnw clean package -DskipTests' }
+            steps { sh './mvn clean package -DskipTests' }
         }
         stage('Build & Push Docker Image') {
             steps {
