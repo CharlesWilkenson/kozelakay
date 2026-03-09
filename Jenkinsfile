@@ -38,7 +38,7 @@ pipeline {
                                                  keyFileVariable: 'SSH_KEY',
                                                  usernameVariable: 'SSH_USER')]) {
                     sh """
-                        ansible-playbook -i inventory.ini deploy.yml \
+                        ansible-playbook -i inventory.ini deploy.yaml \
                         -u ${SSH_USER} \
                         --private-key=${SSH_KEY} \
                         --ssh-common-args='-o StrictHostKeyChecking=no' \
