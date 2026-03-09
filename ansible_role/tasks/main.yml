@@ -1,19 +1,18 @@
 ---
-  pre_tasks:
-    - name: Install Docker (Debian/Ubuntu)
-      apt:
-        name: docker.io
-        state: present
-        update_cache: yes
-      when: ansible_os_family == "Debian"
-
-    - name: Ensure docker is running
-      service:
-        name: docker
-        state: started
-        enabled: yes
-
   tasks:
+  - name: Install Docker (Debian/Ubuntu)
+    apt:
+      name: docker.io
+      state: present
+      update_cache: yes
+    when: ansible_os_family == "Debian"
+
+  - name: Ensure docker is running
+    service:
+      name: docker
+      state: started
+      enabled: yes
+
   - name: Ajouter l'utilisateur distant au groupe docker
     user:
       name: "{{ ansible_user }}"
