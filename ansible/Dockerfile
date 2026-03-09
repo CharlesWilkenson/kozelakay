@@ -1,8 +1,7 @@
 FROM cytopia/ansible:latest
 
-# If your playbooks need extra tools (like python libraries or specific CLI tools), 
-# install them here.
-RUN apk add --no-cache bash
+# Install OpenSSH client (for deployment) and OpenJDK 17 + Maven (for building)
+RUN apk add --no-cache openssh-client openjdk17 maven
 
 # Set working directory
 WORKDIR /ansible

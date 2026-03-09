@@ -1,5 +1,11 @@
 pipeline {
-    agent none
+    agent {
+            dockerfile {
+                // Jenkins looks for the Dockerfile inside the 'ansible' folder
+                dir 'ansible'
+                filename 'Dockerfile'
+            }
+        }
     stages {
         // STEP 1: Get the code from GitHub
         stage('Checkout-Code') {
@@ -25,6 +31,8 @@ pipeline {
                 // The .jar file is now in the 'target/' folder
             }
         }
+
+
 
         // STEP 3: Deploy using an Ansible Container
         stage('Execute Playbook (Deploy)') {
