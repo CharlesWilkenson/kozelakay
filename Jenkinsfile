@@ -1,31 +1,40 @@
 pipeline {
-    agent any // Runs directly on the Jenkins container
-
+    agent any
+    environment {
+        // Remplace par tes vraies infos
+        DOCKER_IMAGE = "wilkidocker2019/mon-app-springboot:${env.BUILD_NUMBER}"
+        REGISTRY_CREDS = 'docker-hub-creds'
+    }
     stages {
-        stage('Checkout-Code') {
+        stage('Checkout') {
+            steps { checkout scm }
+        }
+        stage('Build Artifact') {
+            steps { sh './mvnw clean package -DskipTests' }
+        }
+        stage('Build & Push Docker Image') {
             steps {
-                echo 'Cloning repo...'
-                git branch: 'main', url: 'https://github.com/CharlesWilkenson/kozelakay.git'
+                script {
+                    docker.withRegistry('', REGISTRY_CREDS) {
+                        def customImage = docker.build("${DOCKER_IMAGE}")
+                        customImage.push()
+                        customImage.push('latest') // On garde aussi un tag latest
+                    }
+                }
             }
         }
-
-        stage('Build & Test') {
+        stage('Deploy with Ansible') {
             steps {
-                echo 'Compiling and Packaging with Maven...'
-                // 'mvn' is already inside your custom Dockerfile!
-                sh 'mvn clean package -DskipTests'
-            }
-        }
+                // On passe le tag de l'image en variable à Ansible
+              //  sh "ansible-playbook -i inventory.ini deploy.yml -e 'image_name=${DOCKER_IMAGE}'"
 
-        stage('Execute Playbook (Deploy)') {
-            steps {
                 echo 'Starting Ansible Deployment...'
                 withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ansible-key',
                                                  keyFileVariable: 'SSH_KEY',
                                                  usernameVariable: 'SSH_USER')]) {
                     // 'ansible-playbook' is also already inside your custom Dockerfile!
                     sh """
-                        ansible-playbook -i inventory.ini deploy.yaml \
+                        ansible-playbook -i inventory.ini deploy.yaml -e 'image_name=${DOCKER_IMAGE}\
                         -u ${SSH_USER} \
                         --private-key=${SSH_KEY} \
                         --ssh-common-args='-o StrictHostKeyChecking=no'

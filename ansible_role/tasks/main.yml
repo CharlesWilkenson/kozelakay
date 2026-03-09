@@ -1,25 +1,19 @@
 ---
-  - name: Ensure Java 17 is installed
-    apt:
-      name: openjdk-17-jre-headless
-      state: present
-      update_cache: yes
+  - name: Stop and remove the old container
+    docker_container:
+      name: "{{ app_name }}"
+      state: absent
 
-  - name: Create application directory
-    file:
-      path: "{{ app_dest_path }}"
-      state: directory
-      owner: www-data
-      group: www-data
+  - name: Pull the latest image
+    docker_image:
+      name: "{{ image_name }}"
+      source: pull
 
-  - name: Copy Spring Boot JAR to server
-    copy:
-      src: "{{ app_jar_source }}"
-      dest: "{{ app_dest_path }}/{{ app_name }}.jar"
-      mode: '0755'
-
-  - name: Setup Systemd Service
-    template:
-      src: app_service.j2
-      dest: "/etc/systemd/system/{{ app_name }}.service"
-    notify: Restart App
+  - name: Run the new container
+    docker_container:
+      name: "{{ app_name }}"
+      image: "{{ image_name }}"
+      state: started
+      restart_policy: always
+      ports:
+        - "8083:8080"

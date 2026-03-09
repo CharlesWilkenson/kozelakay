@@ -1,7 +1,4 @@
 ---
-  pkg_name : ""
-  pkg_state: present
   app_name: "cms-project"
-  app_jar_source: "../target/cms-project-0.0.1.jar"
-  app_dest_path: "/opt/{{ app_name }}"
+  image_name: "wilkidocker2019/kozelakay:latest"
   app_port: 8083
