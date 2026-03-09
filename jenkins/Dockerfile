@@ -1,15 +1,17 @@
 FROM jenkins/jenkins:lts
 
-# Switch to root to install system tools
 USER root
 
-# Install Docker CLI so Jenkins can talk to the Docker engine
+# Install Docker CLI and other essentials
 RUN apt-get update && \
-    apt-get install -y docker.io && \
+    apt-get install -y docker.io maven ansible openssh-client && \
     rm -rf /var/lib/apt/lists/*
 
-# Fix the 'dubious ownership' issue globally
+# IMPORTANT: Add the jenkins user to the docker group
+RUN groupadd -g 999 docker && \
+    usermod -aG docker jenkins
+
+# Fix the 'dubious ownership' issue
 RUN git config --global --add safe.directory '*'
 
-# Switch back to the jenkins user
 USER jenkins

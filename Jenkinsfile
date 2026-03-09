@@ -1,13 +1,5 @@
 pipeline {
-    agent {
-        dockerfile {
-            // This uses your custom image that has Java, Maven, Ansible, and SSH
-            dir 'ansible'
-            filename 'Dockerfile'
-            // Maps your local maven cache to the container so it stays fast
-            args '-v $HOME/.m2:/root/.m2'
-        }
-    }
+    agent any // Runs directly on the Jenkins container
 
     stages {
         stage('Checkout-Code') {
