@@ -2,15 +2,20 @@ pipeline {
     agent any
     environment {
         // Remplace par tes vraies infos
-        DOCKER_IMAGE = "wilkidocker2019/mon-app-springboot:${env.BUILD_NUMBER}"
+        DOCKER_IMAGE = "wilkidocker2019/cms-project:${env.BUILD_NUMBER}"
         REGISTRY_CREDS = 'docker-hub-creds'
     }
     stages {
         stage('Checkout') {
-            steps { checkout scm }
+            steps {
+            echo 'Clone the project'
+            checkout scm
+            }
         }
         stage('Build Artifact') {
-            steps { sh 'mvn clean package -DskipTests' }
+            steps {
+
+             sh 'mvn clean package -DskipTests' }
         }
         stage('Build & Push Docker Image') {
             steps {
@@ -34,7 +39,7 @@ pipeline {
                                                  usernameVariable: 'SSH_USER')]) {
                     // 'ansible-playbook' is also already inside your custom Dockerfile!
                     sh """
-                        ansible-playbook -i inventory.ini deploy.yaml -e 'image_name=${DOCKER_IMAGE}\
+                        ansible-playbook -i inventory.ini deploy.yaml -e image_name=${DOCKER_IMAGE}\
                         -u ${SSH_USER} \
                         --private-key=${SSH_KEY} \
                         --ssh-common-args='-o StrictHostKeyChecking=no'
