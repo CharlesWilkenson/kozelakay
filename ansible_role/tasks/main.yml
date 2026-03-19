@@ -35,4 +35,4 @@
       state: started
       restart_policy: always
       ports:
-        - "8083:8080"
+        - "80:8083"

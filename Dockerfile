@@ -9,5 +9,5 @@ COPY ${JAR_FILE} app.jar
 # wget -qO- http://localhost:8080/actuator/health | grep '"status":"UP"' || exit 1
 
 ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75"
-EXPOSE 8080
+EXPOSE 8083
 ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar /app/app.jar"]
